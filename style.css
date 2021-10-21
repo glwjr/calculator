@@ -68,7 +68,8 @@ body {
 
 .number,
 .operand,
-.decimal {
+.decimal,
+.equals {
     font-weight: 700;
     color: #e5e5e5;
     background-color: #1f335f;
