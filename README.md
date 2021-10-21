@@ -1,1 +1,1 @@
-# calculator
+JavaScript calculator built following The Odin Project's curriculum.
