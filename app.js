@@ -1,31 +1,47 @@
 // UI
 
-let firstNumber = 0;
-let secondNumber = 0;
+let firstNumber = "";
+let secondNumber = "";
 let operandActive = false;
 let currentOperand = "";
 let previousOperand = "";
 
 const display = document.getElementById("calc-display");
 const deleteButton = document.querySelector(".delete");
+
 const decimalButton = document.querySelector(".decimal");
+decimalButton.addEventListener("click", () => {
+    if(display.textContent.includes(".")) {
+        return
+    }
+
+    display.textContent += ".";
+    firstNumber += ".";
+})
 
 const clearButton = document.querySelector(".clear");
 clearButton.addEventListener("click", () => clearAll());
 
 function clearAll() {
     display.textContent = "";
-    firstNumber = 0;
-    secondNumber = 0;
+    firstNumber = "";
+    secondNumber = "";
     currentOperand = "";
     operandActive = false;
 }
 
 const equalsButton = document.querySelector(".equals");
 equalsButton.addEventListener("click", () => {
-    const answer = operate(currentOperand, parseInt(firstNumber), parseInt(secondNumber));
+    if (firstNumber == "" || firstNumber == 0) {
+        return
+    }
+    if (currentOperand == "divide" || secondNumber == 0) {
+        display.textContent = "Error";
+        return
+    }
+    const answer = operate(currentOperand, parseFloat(firstNumber), parseFloat(secondNumber));
     firstNumber = answer;
-    display.textContent = answer;
+    display.textContent = firstNumber;
     secondNumber = 0;
     operandActive = false;
 })
@@ -34,12 +50,11 @@ let numberButtons = document.querySelectorAll(".number");
 numberButtons.forEach(button => {
     button.addEventListener("click", () => {
         if (operandActive == true) {
-            secondNumber += button.dataset.value;
+            secondNumber += parseFloat(button.dataset.value);
         }
         if (operandActive == false) {
-            firstNumber += button.dataset.value;
+            firstNumber += parseFloat(button.dataset.value);
         }
-
         display.textContent += button.dataset.value;
     })
 })
@@ -47,8 +62,12 @@ numberButtons.forEach(button => {
 let operandButtons = document.querySelectorAll(".operand");
 operandButtons.forEach(button => {
     button.addEventListener("click", () => {
+        if (secondNumber !== "") {
+            firstNumber = operate(currentOperand, parseFloat(firstNumber), parseFloat(secondNumber));
+        }
         operandActive = true;
         currentOperand = button.dataset.value;
+        secondNumber = "";
         display.textContent = "";
     })
 })
