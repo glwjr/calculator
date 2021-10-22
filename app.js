@@ -8,6 +8,17 @@ let previousOperand = "";
 
 const display = document.getElementById("calc-display");
 const deleteButton = document.querySelector(".delete");
+deleteButton.addEventListener("click", () => {
+    display.textContent = display.textContent.substr(0, display.textContent.length - 1);
+
+    if(operandActive == false) {
+        firstNumber = display.textContent;
+    }
+
+    if(operandActive) {
+        secondNumber = display.textContent;
+    }
+})
 
 const decimalButton = document.querySelector(".decimal");
 decimalButton.addEventListener("click", () => {
