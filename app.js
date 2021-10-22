@@ -14,9 +14,13 @@ decimalButton.addEventListener("click", () => {
     if(display.textContent.includes(".")) {
         return
     }
-
-    display.textContent += ".";
-    firstNumber += ".";
+    if(operandActive == false) {
+        firstNumber += ".";
+    }
+    if(operandActive == true) {
+        secondNumber += ".";
+    }
+    display.textContent += ".";    
 })
 
 const clearButton = document.querySelector(".clear");
@@ -32,23 +36,31 @@ function clearAll() {
 
 const equalsButton = document.querySelector(".equals");
 equalsButton.addEventListener("click", () => {
-    if (firstNumber == "" || firstNumber == 0) {
+    if (firstNumber == "") {
         return
     }
-    if (currentOperand == "divide" || secondNumber == 0) {
+    if (currentOperand == "divide" && secondNumber == 0) {
         display.textContent = "Error";
         return
     }
     const answer = operate(currentOperand, parseFloat(firstNumber), parseFloat(secondNumber));
-    firstNumber = answer;
+    firstNumber = Math.round((answer) * 100) / 100;
     display.textContent = firstNumber;
-    secondNumber = 0;
+    secondNumber = "";
     operandActive = false;
 })
 
 let numberButtons = document.querySelectorAll(".number");
 numberButtons.forEach(button => {
     button.addEventListener("click", () => {
+        if (display.textContent == 0 && secondNumber == "" && operandActive == false) {
+            display.textContent = "";
+            firstNumber = "";
+        }
+        if (display.textContent == 0 && firstNumber !== "") {
+            display.textContent = "";
+            secondNumber = "";
+        }
         if (operandActive == true) {
             secondNumber += parseFloat(button.dataset.value);
         }
