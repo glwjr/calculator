@@ -1,21 +1,26 @@
-// UI
+// Global variables
 
 let firstNumber = "";
 let secondNumber = "";
 let operandActive = false;
 let currentOperand = "";
-let previousOperand = "";
+
+// UI
 
 const display = document.getElementById("calc-display");
 const deleteButton = document.querySelector(".delete");
 deleteButton.addEventListener("click", () => {
+    if(isNaN(display.textContent)) {
+        clearAll();
+    }
+
     display.textContent = display.textContent.substr(0, display.textContent.length - 1);
 
     if(operandActive == false) {
         firstNumber = display.textContent;
     }
 
-    if(operandActive) {
+    if(operandActive == true) {
         secondNumber = display.textContent;
     }
 })
